@@ -1,0 +1,44 @@
+\frametitle{Tercera versión, spinning}
+
+\lstset{language=C++, basicstyle=\scriptsize}
+
+\begin{columns}
+
+\column{0.5\textwidth}
+\begin{lstlisting}
+//Variables globales
+int porciones = 0;
+sLock = spinLock();
+
+void* cocinero(void* s){
+  while(true){
+    while(porciones > 0){}
+    sLock.lock();
+    porciones += llenarCacerola();
+    sLock.unlock();
+  }
+}
+\end{lstlisting}
+
+\column{0.5\textwidth}
+
+\begin{lstlisting}
+void* antropofago(void* s){
+  while(true){
+    while (porciones == 0){}
+    sLock.lock();
+    if (porciones >= 0){
+      porciones--;
+      sLock.unlock();
+      obtener_porcion();
+      comer();
+    }else{
+      sLock.unlock();
+    }
+  }
+}
+\end{lstlisting}
+
+
+\end{columns}
+

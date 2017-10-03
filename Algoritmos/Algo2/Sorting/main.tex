@@ -1,0 +1,290 @@
+\documentclass[pdf
+]{beamer}
+
+\mode<handout>{}
+\usepackage[utf8]{inputenc}
+\usepackage{hyperref}
+\usepackage{algorithm} 
+\usepackage[noend]{algpseudocode}
+\usepackage[spanish]{babel}
+
+
+\title{Prueba de Oposición}
+\subtitle{AY2 - Algoritmos}
+\author{\large{Teodoro Freund}}
+\date{2 de Octubre del 2017 \\ \footnotesize{17:20}} %Chequear
+
+\beamertemplatenavigationsymbolsempty
+
+\begin{document}
+
+\floatname{algorithm}{Algoritmo}
+\floatname{Procedure}{pro}
+\begin{frame}
+\titlepage
+\end{frame}
+
+\begin{frame}{Contexto}
+\begin{itemize}
+\item Materia: Algoritmos y Estructuras de Datos II
+\pause
+\item Práctica 6: Ordenamiento
+\pause
+\item Primera Parte
+\begin{itemize}
+\item Especificación con Tipos Abstractos de Datos (TADs)
+\item Demostración de Propiedades (Inducción Estructural)
+\item Diseño: REP y ABS
+\item Nociones de Complejidad
+\end{itemize}
+
+\item Segunda Parte
+\begin{itemize}
+
+\item Diseño: elección de estructuras de datos
+\pause
+\item \textbf{Ordenamiento}
+\pause
+\item Divide and Conquer
+\end{itemize}
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}{El Ejercicio 15}
+
+Dado un conjunto de naturales, diremos que un agujero es un natural x tal que el conjunto no contiene a x y sí contiene algún elemento menor que x y algún elemento mayor que x.
+
+\vspace{10pt}
+
+\pause
+Diseñar un algoritmo que, dado un arreglo de n naturales, diga si existe algún agujero en el conjunto de los naturales que aparecen en el arreglo. Notar que el arreglo de entrada podría contener elementos repetidos, pero en la vista de conjunto, no es relevante la cantidad de repeticiones.
+
+\vspace{10pt}
+
+\pause
+\begin{enumerate}
+\item {Implementar la función 
+\center{tieneAgujero?(in A: arreglo(nat)) $\rightarrow$ bool}
+
+que resuelve el problema planteado. La función debe ser de tiempo lineal en la cantidad de elementos de la entrada, es decir, O(n), dónde n = tam(A).}
+\pause
+\item {Calcular y justificar la complejidad del algoritmo propuesto.}
+\end{enumerate}
+
+
+
+\end{frame}
+
+\begin{frame}{¿Por qué?}
+
+\begin{itemize}
+\item Es un problema sencillo si se lo encara por la intuición\pause, a veces es mejor empezar a hacer un ejercicio y ver a donde se llega
+
+\pause
+
+\item No usa ningún algoritmo complicado de sorting, es un buen ejercicio inicial
+
+\pause
+
+\item Es uno de los pocos ejercicios que no pide "...un algoritmo de ordenamiento..."
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}{El Ejercicio 15, de nuevo}
+
+Dado un conjunto de naturales, diremos que un agujero es un natural x tal que el conjunto no contiene a x y sí contiene algún elemento menor que x y algún elemento mayor que x.
+
+\vspace{10pt}
+
+
+Diseñar un algoritmo que, dado un arreglo de n naturales, diga si existe algún agujero en el conjunto de los naturales que aparecen en el arreglo. Notar que el arreglo de entrada podría contener elementos repetidos, pero en la vista de conjunto, no es relevante la cantidad de repeticiones.
+
+\vspace{10pt}
+
+
+\begin{enumerate}
+\item {Implementar la función 
+\center{tieneAgujero?(in A: arreglo(nat)) $\rightarrow$ bool}
+
+que resuelve el problema planteado. La función debe ser de tiempo lineal en la cantidad de elementos de la entrada, es decir, O(n), dónde n = tam(A).}
+
+\item {Calcular y justificar la complejidad del algoritmo propuesto.}
+\end{enumerate}
+
+
+
+\end{frame}
+
+
+\begin{frame}{tieneAgujero?, primera version}
+
+
+\begin{algorithm}[H]
+
+\caption{tieneAgujero?}
+\begin{algorithmic}[1]
+\Procedure{tieneAgujero?}{$in~A: Arreglo(nat) $}{$\rightarrow res: bool$}
+
+  \State $B \gets \Call{Copiar}{A}$	\uncover<2->{\Comment $O(n)$}
+	\State $n \gets \Call{tam}{A}$
+  \State $\Call{cSortD}{B}$			\uncover<2->{\Comment $O(n+k)$}
+
+  \State $res \gets false$		\uncover<2->{\Comment $O(1)$}
+
+  \For{$i \gets 1 ~to~ n$}	\uncover<2->{\Comment $O(n)$}
+  %\If{$max(B[i], B[i-1]) - min(B[i]. B[i-1]) > 1$}	
+  %\State $res \gets true$	
+  %\EndIf	
+  \State $res \gets res \lor B[i]-B[i-1]> 1$	\uncover<2->{\Comment $O(1)$}
+  \EndFor	
+
+
+
+
+\EndProcedure
+\end{algorithmic}
+\end{algorithm}
+
+%\begin{algorithm}[H]
+
+%\caption{dist}
+%\begin{algorithmic}[1]
+%\Procedure{dist}{$in~a: nat, in~b: nat$}{$\rightarrow res: nat$}
+%	\State $res \gets \Call{max}{a, b} - \Call{min}{a, b}$	\uncover<2->{\Comment $O(1)$}
+
+%\EndProcedure
+%\end{algorithmic}
+%\end{algorithm}
+
+
+\begin{itemize}
+\item Los ciclos-for se mueven sin llegar al último indice, en este caso $i$ se mueve en $[1..n)$
+\item <2-> n es el tamaño de A
+\item <2-> k es el rango de A, $k=max(A)-min(A)$
+
+\end{itemize}
+
+
+
+
+\end{frame}
+
+
+\begin{frame}{Counting Sort}
+
+\begin{algorithm}[H]
+
+\caption{Counting Sort Desplazado}
+\begin{algorithmic}[1]
+\Procedure{cSortD}{$in/out~A: Arreglo(nat)$}
+
+
+\State $n \gets \Call{tam}{A}$		\uncover<2->{\Comment $O(1)$}
+
+\If{$n \neq 0$}
+	
+
+  \State $m \gets  \Call{min}{A}$	\uncover<2->{\Comment $O(n)$}
+  \For{$i \gets 0 ~to~ n$}	\uncover<2->{\Comment $O(n)$}
+      \State $A[i] \gets A[i]-m$	\uncover<2->{\Comment $O(1)$}
+  \EndFor
+
+  \State $\Call{countingSort}{A}$	\uncover<2->{\Comment $O(n+k)$}
+
+  \For{$i \gets 0 ~to~ n$}	\uncover<2->{\Comment $O(n)$}
+      \State $A[i] \gets A[i]+m$	\uncover<2->{\Comment $O(1)$}
+  \EndFor
+
+\EndIf
+\EndProcedure
+\end{algorithmic}
+\end{algorithm}
+
+\begin{block}{Observación}<2->
+	Si A' es el arreglo una vez que le reste min(A), max(A')=max(A)-min(A), y entonces countingSort sobre A' tiene complejidad $O(n+max(A)-min(A))$, y la complejidad de cSortD queda $O(n+k)$, donde k es max(A)-min(A).
+	%El máximo de A una vez que le resto m, es max(A)-min(A), que es exactamente el rango de A, y como countingSort tiene complejidad $O(n+j)$, donde j es el valor máximo del arreglo, cSortD tiene complejidad $O(n+ (n+k)+n) = O(n+k)$, donde k es el rango mencionado.
+\end{block}
+
+\end{frame}
+
+
+
+\begin{frame}{tieneAgujero?, versión buena}
+
+\begin{algorithm}[H]
+
+\caption{tieneAgujero?}
+\begin{algorithmic}[1]
+\Procedure{tieneAgujero?}{$in~A: Arreglo(nat) $}{$\rightarrow res: bool$}
+%\State $M \gets \Call{max}{A}$	\uncover<2->{\Comment $O(n)$}
+%\State $m \gets  \Call{min}{A}$	\uncover<2->{\Comment $O(n)$}
+\State $n \gets \Call{tam}{A}$	\uncover<2->{\Comment $O(1)$}
+
+\If {$ n\neq 0 \land (\Call{max}{A}-\Call{min}{A})\geq n$}	\uncover<2->{\Comment $O(1)$}
+	\State $res \gets true$	\uncover<2->{\Comment $O(1)$}
+\Else
+	\State $B \gets \Call{Copiar}{A}$	\uncover<2->{\Comment $O(n)$}
+	\State $\Call{cSortD}{B}$	\uncover<2->{\Comment $O(n+k)=O(n), n>k$}
+    
+    \State $res \gets false$ \uncover<2->{\Comment $O(1)$}
+    
+    \For{$i \gets 1 ~to~ n$}	\uncover<2->{\Comment $O(n)$}
+  \State $res \gets res \lor B[i]- B[i-1]> 1$	\uncover<2->{\Comment $O(1)$}
+    	
+    	%\If{$max(B[i], B[i-1]) - min(B[i]. B[i-1]) > 1$}
+        %	\State $res \gets true$
+        %\EndIf
+    	%\State $res \gets res \lor max(B[i], B[i-1]) - min(B[i]. B[i-1]) \leq 1$
+    \EndFor
+
+
+\EndIf
+
+\EndProcedure
+\end{algorithmic}
+\end{algorithm}
+
+
+\end{frame}
+
+
+\begin{frame}{Operaciones auxiliares}
+
+\begin{algorithm}[H]
+
+\caption{max}
+\begin{algorithmic}[1]
+\Procedure{max}{$in~A: Arreglo(nat) $}{$\rightarrow res: nat$}
+\State $res \gets A[0]$	\Comment $O(1)$
+\State $n \gets \Call{tam}{A}$	\Comment $O(1)$
+
+\For{$i \gets 0 ~to~ n$}	\Comment $O(n)$
+	\State $res \gets \Call{max}{res, A[i]}$	\Comment $O(1)$
+\EndFor
+
+\EndProcedure
+\end{algorithmic}
+\end{algorithm}
+
+\begin{algorithm}[H]
+\caption{min}
+\begin{algorithmic}[1]
+\Procedure{min}{$in~A: Arreglo(nat) $}{$\rightarrow res: nat$}
+\State $res \gets A[0]$	\Comment $O(1)$
+\State $n \gets \Call{tam}{A}$	\Comment $O(1)$
+
+\For{$i \gets 0 ~to~ n$}	\Comment $O(n)$
+	\State $res \gets \Call{min}{res, A[i]}$	\Comment $O(1)$
+\EndFor
+
+\EndProcedure
+\end{algorithmic}
+\end{algorithm}
+
+
+\end{frame}
+
+
+\end{document}

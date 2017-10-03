@@ -1,0 +1,154 @@
+\documentclass[presentation
+]{beamer}
+
+\mode<handout>{}
+\usepackage[utf8]{inputenc}
+\usepackage{hyperref}
+\usepackage{algorithm} 
+\usepackage[noend]{algpseudocode}
+\usepackage[spanish]{babel}
+
+
+\title{Prueba de Oposición}
+\subtitle{AY2 - Teoría}
+\author{\large{Teodoro Freund}}
+\date{19 de Septiembre del 2017 \\ \footnotesize{14:20}} %Chequear
+
+\beamertemplatenavigationsymbolsempty
+
+\begin{document}
+
+\floatname{algorithm}{Algoritmo}
+\floatname{Procedure}{pro}
+\begin{frame}
+\titlepage
+\end{frame}
+
+
+
+\begin{frame}{El Ejercicio 3}
+
+Dado $L = \{~0^i1^j ~| ~i>j \lor i~ par\}$
+
+\begin{itemize}
+\item[a] Demostrar que L cumple: 
+$$ \forall \alpha (\alpha \in L \land |\alpha| \geq 2 \Rightarrow \exists x, y, z $$ 
+$$  (\alpha = xyz \land |xy| \leq 2 \land |y| \geq 1 \land \forall k (xy^kz \in L))) $$
+
+\item[b] Demostrar que L no es regular
+\end{itemize}
+
+ 
+
+\end{frame}
+
+
+\begin{frame}{Contexto}
+\begin{itemize}
+\item Materia: Teoría de Lenguajes
+\pause
+\item Lenguajes regulares, Lema de Pumping
+\pause
+
+\item Primera Parte de la materia:
+\begin{itemize}
+\item Los alumnos vieron los conceptos de gramáticas regulares, expresiones regulares y automátas. Y entienden su equivalencia.
+\item Se dio el concepto de lenguaje regular. Y se vieron propiedades sobre estos.
+\item Se vio el Lema de Pumping como herramienta para probar no regularidad.
+\end{itemize}
+
+
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}{¿Por qué?}
+
+\begin{itemize}
+\item Es un problema que integra distintos conocimientos sobre lenguajes regulares y propiedades sobre ellos.
+
+\item Podría formar parte de una guía de ejercicios e incluso ser resuelto en clase.
+
+\item Deja asentado que si $L$ es un lenguaje, no vale en general:
+
+\begin{center}
+
+$L$ cumple el Lema de Pumping $\Rightarrow$ $L$ es regular
+\end{center}
+
+
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}{El Ejercicio 3, de nuevo}
+Dado $L = \{~0^i1^j ~| ~i>j \lor i~ par\}$
+
+\begin{itemize}
+\item[a] Demostrar que L cumple: 
+$$ \forall \alpha (\alpha \in L \land |\alpha| \geq 2 \Rightarrow \exists x, y, z $$ 
+$$  (\alpha = xyz \land |xy| \leq 2 \land |y| \geq 1 \land \forall k (xy^kz \in L))) $$
+
+\item[b] Demostrar que L no es regular
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}{a. Demostración por casos}
+$L = \{~0^i1^j ~| ~i>j \lor i~ par\}$, queremos ver que L cumple:
+
+$$ \forall \alpha (\alpha \in L \land |\alpha| \geq 2 \Rightarrow \exists x, y, z $$ 
+$$  (\alpha = xyz \land |xy| \leq 2 \land |y| \geq 1 \land \forall k (xy^kz \in L))) $$
+
+
+Primero notemos que $\alpha = 0^i1^j$ y que $i+j \geq 2$.
+
+\pause
+
+\begin{itemize}
+\item $i$ par:
+\pause
+\begin{itemize}
+\item $i = 0$: \emph{Pizarrón}
+\pause
+\item $i \neq 0 \Rightarrow i\geq 2$: \emph{Pizarrón}
+\end{itemize}
+\pause
+\item $i$ impar $\Rightarrow i >j$: \emph{Pizarrón}
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}{b. Por el absurdo}
+
+Primero que nada recordemos los siguientes resultados:
+
+\begin{itemize}
+\item Si r es una expresión regular, el lenguaje que genera es regular.
+\item Sean $L$ y $K$ dos lenguajes regulares:
+\begin{itemize}
+\item $\overline{L}$ es regular. Esto se piensa con $\Sigma^*$ cómo nuestro universo y $\overline{L} = \Sigma^* - L$.
+\item $L \cap K$ es un lenguaje regular
+\item $\exists n $ tal que se cumple el Lema de Pumping.
+\end{itemize}
+\end{itemize}
+
+\pause
+
+Galerazo:
+\begin{itemize}
+\item Sea $R$ el lenguaje regular generado por la siguiente expresión regular: $(00)^*1^*$
+\pause 
+\item Supongamos que $L$ es regular
+\pause
+\item y llamemos $K$ al lenguaje regular dado por $K = L\cap \overline{R} = L - R$
+\end{itemize}
+
+
+
+\end{frame}
+
+
+
+
+\end{document}

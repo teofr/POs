@@ -1,0 +1,298 @@
+\documentclass[presentation]{beamer}
+
+\mode<handout>{}
+\usepackage[utf8]{inputenc}
+\usepackage{hyperref}
+\usepackage{algorithm} 
+\usepackage[noend]{algpseudocode}
+\usepackage[spanish]{babel}
+\usepackage{listings}
+\usepackage{ulem}
+
+
+\title{Prueba de Oposición}
+\subtitle{AY2 - Sistemas}
+\author{\large{Teodoro Freund}}
+\date{20 de Septiembre del 2017 \\ \footnotesize{16:00}} %Chequear
+
+\beamertemplatenavigationsymbolsempty
+
+\begin{document}
+
+\floatname{algorithm}{Algoritmo}
+\floatname{Procedure}{pro}
+\begin{frame}
+\titlepage
+\end{frame}
+
+\begin{frame}{Contexto}
+\begin{itemize}
+\item Materia: Sistemas Operativos
+\pause
+\item Práctica 3: Sincronización entre procesos
+\pause
+\item Primera Parte:
+\begin{itemize}
+\item Procesos y API del SO
+\item Scheduling
+\pause
+\item \textbf{Sincronización entre procesos}
+\pause
+\end{itemize}
+\item Segunda Parte:
+\begin{itemize}
+\item Administración de Memoria
+
+\item Administración de Entrada/Salida
+\item Protección y Seguridad
+\item Sistemas de Archivos
+\item Sistemas Distribuidos
+\item Programación Concurrente
+\end{itemize}
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}[fragile]{El Ejercicio 21: La cena de los antropófagos}
+
+Una tribu de antropófagos cena de una gran cacerola que puede contener M porciones de misionero asado. Cuando un antropófago quiere comer se sirve de la cacerola, excepto que esté vacía. Si la cacerola está vacía, el antropófago despierta al cocinero y espera hasta que éste rellene la cacerola.\\
+
+
+Pensar que, sin sincronización el antropófago hace:
+
+
+
+\begin{lstlisting}[language=C++]
+while(true){
+  obtener_porcion();
+  comer();
+}
+\end{lstlisting}
+
+La idea es que el antropófago no pueda comer si la cacerola está vacía y que el cocinero sólo trabaje si está vacía la cacerola.
+
+\end{frame}
+
+
+
+
+
+\begin{frame}{¿Por qué?}
+
+\begin{itemize}
+\item Es un buen caso de ejemplo de la primitiva menos usada: condición de variable.
+
+\item Si bien entra dentro del marco Productor-Consumidor, tiene un giro sobre el mismo.
+
+\item Da para discutir distintas implementaciones y sus ventajas y desventajas.
+
+\item Por todo esto, es un buen ejercicio para dar en clase.
+
+
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}{Pensemos partes de la solución}
+
+\begin{itemize}
+\item El cocinero espera a que la cacerola esté vacía
+\pause
+
+\item El antropófago, a que esté llena
+\pause
+\item Esas condiciones podrían ser señalizadas de alguna manera en vez de preguntadas por dichos hilos
+\pause
+\item Necesitamos exclusión mútua sobre la 'cacerola'
+\end{itemize}
+
+\end{frame}
+
+
+\begin{frame}[fragile]{Primera Versión \footnote{Sacada de una clase de IIT}}
+
+\lstset{language=C++, basicstyle=\scriptsize}
+
+\begin{columns}
+ 
+\column{0.5\textwidth}
+\begin{lstlisting}
+//Variables globales
+int porciones = 0;
+mutex = semaforo(1);
+vacia = semaforo(0);
+lleno = semaforo(0);
+
+
+void* cocinero(void* s){
+  while(true){
+    vacia.wait();
+    porciones += llenarCacerola();
+    llena.signal();
+  }
+}
+\end{lstlisting}
+ 
+\column{0.5\textwidth}
+\begin{lstlisting}
+void* antropofago(void* s){
+  while(true){
+    mutex.wait();
+    if (porciones == 0){
+      vacia.signal();
+      lleno.wait();
+    }
+    porciones--;
+    obtener_porcion();
+    mutex.signal();
+    comer();
+  }
+}
+\end{lstlisting}
+\end{columns}
+
+
+
+
+
+\end{frame}
+
+\begin{frame}{Pros y contras de esta solución}
+\underline{Pros:}
+\begin{itemize}
+\item<1-> Resuelve el problema
+\item<2-> No hay busy-wait
+\item<3-> \only<3>{Mantiene exclusión mútua sobre \texttt{obtener\_porcion()}} \only<4->{\sout{Mantiene exclusión mútua sobre \texttt{obtener\_porcion()}}}
+\end{itemize}
+
+\only<4->{\underline{Contras:}}
+\begin{itemize}
+\item <4-> Mantiene exclusión mútua sobre \texttt{obtener\_porcion()}
+\item<5-> Innumerables llamadas al sistema operativo
+\item<6-> La abstracción está lejos de ser ideal
+\end{itemize}
+
+\end{frame}
+
+
+\begin{frame}[fragile]{Segunda versión}
+
+\lstset{language=C++, basicstyle=\scriptsize}
+
+\begin{columns}
+
+\column{0.5\textwidth}
+\begin{lstlisting}
+//Variables globales
+int porciones = 0;
+vacia = condicion();
+llena = condicion();
+condMutex = semaforo(1);
+
+void* cocinero(void* s){
+  while(true){
+    condMutex.lock();
+    while(porciones > 0){
+      vacia.wait(condMutex);
+    }
+    porciones += llenarCacerola();
+    llena.broadcast();
+    condMutex.unlock();
+  }
+}
+\end{lstlisting}
+
+\column{0.5\textwidth}
+
+\begin{lstlisting}
+void* antropofago(void* s){
+  while(true){
+    condMutex.lock();
+    while(porciones <= 0){
+      vacia.broadcast();
+      llena.wait(condMutex);
+    }
+    int porcion = porciones--;
+    condMutex.unlock();  
+    obtener_porcion();
+    comer();    
+  }
+}
+\end{lstlisting}
+
+
+\end{columns}
+
+\end{frame}
+
+\begin{frame}{Pros y contras de esta solución}
+\underline{Pros:}
+\begin{itemize}
+\item<1-> Resuelve el problema
+\item<2-> No hay busy-wait
+\item<3-> No mantiene exclusión mútua sobre \texttt{obtener\_porcion()}
+\item<4-> Las primitivas parecen abstraer mejor la situación
+\end{itemize}
+
+\only<5->{\underline{Contras:}}
+\begin{itemize}
+\item<5-> Innumerables llamadas al sistema operativo \only<6-> {\emph{¿Esto es algo malo?}}
+\end{itemize}
+
+\end{frame}
+
+
+
+
+
+\begin{frame}[fragile]{Tercera versión, spinning}
+
+\lstset{language=C++, basicstyle=\scriptsize}
+
+\begin{columns}
+
+\column{0.5\textwidth}
+\begin{lstlisting}
+//Variables globales
+int porciones = 0;
+sLock = spinLock();
+
+void* cocinero(void* s){
+  while(true){
+    while(porciones > 0){}
+    sLock.lock();
+    porciones += llenarCacerola();
+    sLock.unlock();
+  }
+}
+\end{lstlisting}
+
+\column{0.5\textwidth}
+
+\begin{lstlisting}
+void* antropofago(void* s){
+  while(true){
+    while (porciones == 0){}
+    sLock.lock();
+    if (porciones >= 0){
+      porciones--;
+      sLock.unlock();
+      obtener_porcion();
+      comer();
+    }else{
+      sLock.unlock();
+    }    
+  }
+}
+\end{lstlisting}
+
+
+\end{columns}
+
+\end{frame}
+
+
+
+
+
+\end{document}
