@@ -1,0 +1,4 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{n+nf}{ejemplo}\PYG{+w}{ }\PYG{o+ow}{::}\PYG{+w}{ }\PYG{p}{[}\PYG{k+kt}{Int}\PYG{+w}{ }\PYG{o+ow}{\PYGZhy{}\PYGZgt{}}\PYG{+w}{ }\PYG{k+kt}{Int}\PYG{p}{]}
+\PYG{n+nf}{ejemplo}\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }\PYG{n}{map}\PYG{+w}{ }\PYG{n}{const}\PYG{+w}{ }\PYG{p}{[}\PYG{l+m+mi}{2}\PYG{p}{,}\PYG{l+m+mi}{4}\PYG{o}{..}\PYG{p}{]}
+\end{Verbatim}

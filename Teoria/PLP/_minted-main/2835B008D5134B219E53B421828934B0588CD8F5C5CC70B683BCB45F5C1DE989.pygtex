@@ -1,0 +1,6 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{n+nf}{indecidible}\PYG{+w}{ }\PYG{o+ow}{::}\PYG{+w}{ }\PYG{k+kt}{Int}\PYG{+w}{ }\PYG{o+ow}{\PYGZhy{}\PYGZgt{}}\PYG{+w}{ }\PYG{k+kt}{Int}
+\PYG{n+nf}{indecidible}\PYG{+w}{ }\PYG{n}{x}\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }\PYG{n}{indecidible}\PYG{+w}{ }\PYG{o}{\PYGZdl{}}\PYG{+w}{ }\PYG{n}{x}\PYG{+w}{ }\PYG{o}{+}\PYG{+w}{ }\PYG{l+m+mi}{1}
+
+\PYG{n+nf}{perteneceindecidible}\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }\PYG{n}{infinitos}\PYG{+w}{ }\PYG{n}{indecidible}
+\end{Verbatim}

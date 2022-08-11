@@ -1,0 +1,4 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{n+nf}{infinitos}\PYG{+w}{ }\PYG{o+ow}{::}\PYG{+w}{ }\PYG{k+kt}{Conj}\PYG{+w}{ }\PYG{p}{(}\PYG{k+kt}{Int}\PYG{+w}{ }\PYG{o+ow}{\PYGZhy{}\PYGZgt{}}\PYG{+w}{ }\PYG{k+kt}{Int}\PYG{p}{)}
+\PYG{n+nf}{infinitos}\PYG{+w}{ }\PYG{n}{f}\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }\PYG{n}{f}\PYG{+w}{ }\PYG{l+m+mi}{0}\PYG{+w}{ }\PYG{p}{`}\PYG{n}{mod}\PYG{p}{`}\PYG{+w}{ }\PYG{l+m+mi}{2}\PYG{+w}{ }\PYG{o}{==}\PYG{+w}{ }\PYG{l+m+mi}{0}
+\end{Verbatim}

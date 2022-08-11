@@ -1,0 +1,39 @@
+\frametitle{Decibilidad de la pertenencia al conjunto}
+
+\begin{overprint}
+
+\onslide<1>
+\begin{block}{Pizarrón/Editor}
+\begin{minted}{haskell}
+indecidible :: Int -> Int
+indecidible x =
+\end{minted}
+\end{block}
+
+\onslide<2>
+\begin{block}{Pizarrón/Editor}
+\begin{minted}{haskell}
+indecidible :: Int -> Int
+indecidible x = indecidible $ x + 1
+\end{minted}
+\end{block}
+
+\onslide<3>
+\begin{block}{Pizarrón/Editor}
+\begin{minted}{haskell}
+indecidible :: Int -> Int
+indecidible x = indecidible $ x + 1
+
+perteneceindecidible = infinitos indecidible
+\end{minted}
+\end{block}
+
+\end{overprint}
+
+\begin{itemize}
+    \item<1-> Busquemos alguna funcion que sea indecidible verificar su pertenencia
+    \item<2-> Una opción es alguna función que nunca termine, de tal forma de nunca poder saber el resultado de aplicarla a 0
+    \item<3-> Apenas infinitos intente aplicarla a 0 para verificar su pertenencia se va a colgar
+\end{itemize}
+
+

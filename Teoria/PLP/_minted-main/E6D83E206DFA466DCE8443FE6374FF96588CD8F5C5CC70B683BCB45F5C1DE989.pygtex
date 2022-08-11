@@ -1,0 +1,4 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{n+nf}{agregar}\PYG{+w}{ }\PYG{o+ow}{::}\PYG{+w}{ }\PYG{k+kt}{Eq}\PYG{+w}{ }\PYG{n}{a}\PYG{+w}{ }\PYG{o+ow}{=\PYGZgt{}}\PYG{+w}{ }\PYG{n}{a}\PYG{+w}{ }\PYG{o+ow}{\PYGZhy{}\PYGZgt{}}\PYG{+w}{ }\PYG{k+kt}{Conj}\PYG{+w}{ }\PYG{n}{a}\PYG{+w}{ }\PYG{o+ow}{\PYGZhy{}\PYGZgt{}}\PYG{+w}{ }\PYG{k+kt}{Conj}\PYG{+w}{ }\PYG{n}{a}
+\PYG{n+nf}{agregar}\PYG{+w}{ }\PYG{n}{a}\PYG{+w}{ }\PYG{n}{c}\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }\PYG{n+nf}{\PYGZbs{}}\PYG{n}{e}\PYG{+w}{ }\PYG{o+ow}{\PYGZhy{}\PYGZgt{}}
+\end{Verbatim}
